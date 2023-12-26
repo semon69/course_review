@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-else-if */
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
@@ -10,6 +11,8 @@ import handleZodError from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidationError';
 import handleDuplicateKeyError from '../errors/handleDuplicateError';
 import { AppError } from '../errors/appError';
+import httpStatus from 'http-status';
+
 export const globalErrorHandler: ErrorRequestHandler = (
   error,
   req,
@@ -20,6 +23,13 @@ export const globalErrorHandler: ErrorRequestHandler = (
   let message = error.message || 'Something went wrong';
   let errorMessage = error.errorMessage || 'Something went wrong';
   let errorDetails = error || 'Something Went Wrong';
+
+  if (statusCode === httpStatus.UNAUTHORIZED) {
+    errorMessage =
+      'You do not have the necessary permissions to access this resource.';
+    errorDetails = null;
+    error.stack = null;
+  }
 
   if (error instanceof ZodError) {
     const getErrors = handleZodError(error);
@@ -53,7 +63,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
     success: false,
     message: message,
     errorMessage: errorMessage,
-    errorDetails: error,
+    errorDetails,
     stack: config?.NODE_ENV === 'development' ? error?.stack : null,
   });
 };
