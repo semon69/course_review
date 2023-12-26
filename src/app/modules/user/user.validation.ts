@@ -9,6 +9,14 @@ const userSchemaZod = z.object({
   }),
 });
 
+const loginUserSchemaZod = z.object({
+  body: z.object({
+    username: z.string(),
+    password: z.string()
+  }),
+});
+
 export const userValidation = {
-    userSchemaZod
+    userSchemaZod,
+    loginUserSchemaZod
 }
