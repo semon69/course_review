@@ -2,21 +2,26 @@ import { Router } from 'express';
 import { CategoryRoutes } from '../modules/category/category.routes';
 import { CourseRoutes } from '../modules/course/course.routes';
 import { ReviewRoutes } from '../modules/review/review.routes';
+import { UserRoutes } from '../modules/user/user.route';
 
 const router = Router();
 
 const moduleRoutes = [
   {
-    path: '/',
+    path: '/api',
     route: CourseRoutes
   },
   {
-    path: '/',
+    path: '/api',
     route: CategoryRoutes
   },
   {
-    path: '/',
+    path: '/api',
     route: ReviewRoutes
+  },
+  {
+    path: '/api',
+    route: UserRoutes
   }
 ];
 

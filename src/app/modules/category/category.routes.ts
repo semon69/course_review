@@ -6,12 +6,12 @@ import { categoryValidation } from './category.validation';
 const router = Router();
 
 router.post(
-  '/api/categories',
+  '/categories',
   validateRequest(
     categoryValidation.createCategotyValidation
   ),
   categoryControllers.createCaregory
 );
-router.get('/api/categories', categoryControllers.getAllCategory)
+router.get('/categories', categoryControllers.getAllCategory)
 
 export const CategoryRoutes = router;

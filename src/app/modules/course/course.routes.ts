@@ -6,20 +6,20 @@ import { courseValidation } from './course.validation';
 const router = Router();
 
 router.post(
-  '/api/course',
+  '/course',
   validateRequest(courseValidation.courseSchemaZod),
   courseControllers.createCourse,
 );
 
-router.get('/api/courses', courseControllers.getCourses);
+router.get('/courses', courseControllers.getCourses);
 
 router.put(
-  '/api/courses/:courseId',
+  '/courses/:courseId',
   validateRequest(courseValidation.updateCourseSchemaZod),
   courseControllers.updateSingleCourse,
 );
 
-router.get('/api/courses/:courseId/reviews', courseControllers.getCourseWithReviews)
-router.get('/api/course/best', courseControllers.getBestCourse)
+router.get('/courses/:courseId/reviews', courseControllers.getCourseWithReviews)
+router.get('/course/best', courseControllers.getBestCourse)
 
 export const CourseRoutes = router;

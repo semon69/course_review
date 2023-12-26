@@ -6,7 +6,7 @@ import { reviewValidation } from './review.validation';
 const router = Router();
 
 router.post(
-  '/api/reviews',
+  '/reviews',
   validateRequest(
     reviewValidation.reviewSchemaZod
   ),
