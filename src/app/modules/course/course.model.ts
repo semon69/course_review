@@ -5,7 +5,7 @@ const tagsSchema = new Schema<TTags>({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   isDeleted: {
     type: Boolean,
@@ -63,19 +63,21 @@ const courseSchema = new Schema<TCourse>(
     },
     durationInWeeks: {
       type: Number,
-      required: true
+      required: true,
     },
     details: {
       type: detailsSchema,
       required: true,
     },
-  },
-  {
-    toJSON: {
-      virtuals: true,
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
     },
   },
+  {
+    timestamps: true,
+  }
 );
-
 
 export const Course = model<TCourse>('Course', courseSchema);

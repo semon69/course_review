@@ -5,9 +5,18 @@ import { TCourse } from './course.interface';
 import { Course } from './course.model';
 import mongoose from 'mongoose';
 import { Review } from '../review/review.model';
+import config from '../../config';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 // Create course
-const createCourseIntoDB = async (payload: TCourse) => {
+const createCourseIntoDB = async (token: string, payload: TCourse) => {
+  const decoded = jwt.verify(
+    token,
+    config.jwt_access_token as string,
+  ) as JwtPayload;
+  const createdBy = decoded._id;
+
+  // claculate duration weeks
   const startDate = new Date(payload.startDate as string);
   const endDate = new Date(payload.endDate as string);
 
@@ -18,7 +27,7 @@ const createCourseIntoDB = async (payload: TCourse) => {
   const weeks = Math.floor(durationInMs / (7 * 24 * 60 * 60 * 1000));
   payload.durationInWeeks = weeks;
 
-  const result = await Course.create(payload);
+  const result = await Course.create({ ...payload, createdBy });
 
   return result;
 };
@@ -36,7 +45,7 @@ const getAllCourseFromDB = async (query: any) => {
   if (query?.maxPrice && !isNaN(Number(query?.maxPrice))) {
     filter.price = { ...filter.price, $lte: Number(query?.maxPrice) };
   }
- 
+
   // Filter based on tags name
   if (query?.tags) {
     const tagName = query?.tags.split(',').map((tag: string) => tag.trim());
@@ -68,7 +77,7 @@ const getAllCourseFromDB = async (query: any) => {
   if (query?.durationInWeeks && !isNaN(Number(query?.durationInWeeks))) {
     filter.durationInWeeks = Number(query?.durationInWeeks);
   }
-  // filter based on level 
+  // filter based on level
   if (query?.level) {
     filter['details.level'] = query?.level;
   }
@@ -90,7 +99,14 @@ const getAllCourseFromDB = async (query: any) => {
     sort[query?.sortBy] = query?.sortOrder === 'asc' ? 1 : -1;
   }
 
-  const data = await Course.find(filter, null, { skip, limit, sort });
+  const courses = await Course.find(filter, null, {
+    skip,
+    limit,
+    sort,
+  }).populate({
+    path: 'createdBy',
+    select: 'email username _id role',
+  });
   const count = await Course.countDocuments(filter);
 
   const meta = {
@@ -98,11 +114,10 @@ const getAllCourseFromDB = async (query: any) => {
     limit,
     total: count,
   };
-  const result = { meta, data };
+  const result = { meta, data: { courses } };
 
   return result;
 };
-
 
 // Update course data into db
 const updateCourseDataIntoDB = async (
@@ -182,7 +197,10 @@ const updateCourseDataIntoDB = async (
     await session.commitTransaction();
     await session.endSession();
 
-    return await Course.findById(id);
+    return await Course.findById(id).populate({
+      path: 'createdBy',
+      select: 'email username _id role',
+    });
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
@@ -193,9 +211,15 @@ const updateCourseDataIntoDB = async (
 // Get course with reviews
 const getCourseWithReviews = async (id: string) => {
   try {
-    const course = await Course.findById(id);
+    const course = await Course.findById(id).populate({
+      path: 'createdBy',
+      select: 'email username _id role',
+    });
 
-    const reviews = await Review.find({ courseId: id });
+    const reviews = await Review.find({ courseId: id }).populate({
+      path: 'createdBy',
+      select: 'email username _id role',
+    });
 
     return { course, reviews };
   } catch (error) {
@@ -223,7 +247,10 @@ const getBestCourseFromDB = async () => {
 
   const { _id, averageRating, reviewCount } = bestCourse;
 
-  const course = await Course.findById(_id);
+  const course = await Course.findById(_id).populate({
+    path: 'createdBy',
+    select: 'email username _id role',
+  });
 
   if (!course) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Course not forund');

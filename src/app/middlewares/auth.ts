@@ -13,7 +13,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     // checking if the token is missing
     if (!token) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+      throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized Access');
     }
 
     // checking if the given token is valid
@@ -22,10 +22,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
       config.jwt_access_token as string,
     ) as JwtPayload;
 
-    const {username, role, email, id } = decoded;
+    const { _id, role } = decoded;
 
     // checking if the user is exist
-    const user = await User.isUserExistsUsername(username);
+    const user = await User.findById(_id);
 
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
@@ -33,12 +33,12 @@ const auth = (...requiredRoles: TUserRole[]) => {
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
-        'You are not authorized  hi!',
+        'Unauthorized Access',
       );
     }
 
     req.user = decoded as JwtPayload & { role: string };
-    
+
     next();
   });
 };

@@ -6,7 +6,8 @@ import httpStatus from 'http-status';
 
 // Create course into db
 const createCourse = catchAsync(async (req, res) => {
-  const result = await courseServices.createCourseIntoDB(req.body);
+  const token = req.headers.authorization as string
+  const result = await courseServices.createCourseIntoDB(token, req.body);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
