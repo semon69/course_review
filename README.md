@@ -4,6 +4,9 @@ This TypeScript-based Course Management System utilizes Express.js and MongoDB w
 
 ## Key Features
 
+- Authentication: The application is secured by JWT authentication method
+- Authorization: Only authorized person can access the protected resources
+
 ### Models:
 
 - Course: Detailed representation of a course with various attributes such as title, instructor, price, tags, and more.
@@ -12,12 +15,12 @@ This TypeScript-based Course Management System utilizes Express.js and MongoDB w
 
 ### Endpoints:
 
-1. Create a Course: POST /api/course
+1. Create a Course: POST /api/courses (Only Admin can create course)
 2. Get Paginated and Filtered Courses: GET /api/courses
-3. Create a Category: POST /api/categories
+3. Create a Category: POST /api/categories (Only Admin can create course)
 4. Get All Categories: GET /api/categories
-5. Create a Review: POST /api/reviews
-6. Update a Course (Partial Update with Dynamic Update): PUT /api/courses/:courseId
+5. Create a Review: POST /api/reviews (Only User can create course)
+6. Update a Course (Partial Update with Dynamic Update): PUT /api/courses/:courseId (Only Admin can create course)
 7. Get Course by ID with Reviews: GET /api/courses/:courseId/reviews
 8. Get the Best Course Based on Average Review (Rating): GET /api/course/best
 
@@ -41,21 +44,23 @@ This TypeScript-based Course Management System utilizes Express.js and MongoDB w
 ## How to Use
 
 1. Installation:
+
    - Clone the repository
    - Run npm install to install dependencies
 
 2. Configuration:
+
    - Set up MongoDB connection in the configuration file
 
 3. Run:
+
    - Execute npm run start:dev to run the application
 
 4. API Documentation:
-   - Refer to the API documentation for details on available endpoints
+   # Click the link to see details about the api
+   - https://documenter.getpostman.com/view/31175801/2s9YkuXxko
 
 5. Contribute:
    - Feel free to contribute by opening issues or submitting pull requests
-
-
 
 This Course Management System provides a comprehensive solution for managing courses, categories, and reviews with a user-friendly API and solid data validation practices.

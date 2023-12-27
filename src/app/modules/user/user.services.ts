@@ -10,7 +10,7 @@ import bcrypt from 'bcrypt';
 const createUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  const { password, ...otherFields } = result.toObject();
+  const {passwordHistory ,password, ...otherFields } = result.toObject();
   return otherFields;
 };
 
