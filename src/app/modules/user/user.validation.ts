@@ -16,7 +16,15 @@ const loginUserSchemaZod = z.object({
   }),
 });
 
+const changePasswordSchemaZod = z.object({
+  body: z.object({
+    currentPassword: z.string(),
+    newPassword: z.string()
+  }),
+});
+
 export const userValidation = {
     userSchemaZod,
-    loginUserSchemaZod
+    loginUserSchemaZod,
+    changePasswordSchemaZod
 }

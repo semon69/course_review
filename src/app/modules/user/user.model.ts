@@ -24,6 +24,23 @@ const userSchema = new Schema<TUser, UserModel>(
       enum: ['user', 'admin'],
       required: true,
     },
+    passwordHistory: {
+      type: [
+        {
+          password: {
+            type: String,
+            required: true
+          },
+          timestamps: {
+            type: Date,
+            required: true
+          }
+        }
+      ]
+    },
+    passwordChangeAt: {
+      type: Date
+    }
   },
   {
     timestamps: true,
@@ -53,14 +70,5 @@ userSchema.statics.isPasswordMatched = async function (
 ) {
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
-
-// userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
-//   passwordChangedTimestamp: Date,
-//   jwtIssuedTimestamp: number,
-// ) {
-//   const passwordChangedTime =
-//     new Date(passwordChangedTimestamp).getTime() / 1000;
-//   return passwordChangedTime > jwtIssuedTimestamp;
-// };
 
 export const User = model<TUser, UserModel>('User', userSchema);

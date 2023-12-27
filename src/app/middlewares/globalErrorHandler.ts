@@ -30,6 +30,15 @@ export const globalErrorHandler: ErrorRequestHandler = (
     errorDetails = null;
     error.stack = null;
   }
+  
+  if (error instanceof AppError && error?.authError) {
+    return res.status(statusCode).json({
+      success: false,
+      statusCode,
+      message: message,
+      data: null
+    });
+  }
 
   if (error instanceof ZodError) {
     const getErrors = handleZodError(error);
