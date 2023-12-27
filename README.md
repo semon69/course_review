@@ -2,6 +2,10 @@
 
 This TypeScript-based Course Management System utilizes Express.js and MongoDB with Mongoose for Object Data Modeling and Validation. It provides a set of API endpoints for creating, updating, and retrieving courses, categories, and reviews. The system includes robust error handling, employing Joi/Zod for data validation.
 
+## Live link:
+
+- https://course-review-navy.vercel.app/
+
 ## Key Features
 
 - Authentication: The application is secured by JWT authentication method
@@ -57,7 +61,7 @@ This TypeScript-based Course Management System utilizes Express.js and MongoDB w
    - Execute npm run start:dev to run the application
 
 4. API Documentation:
-   # Click the link to see details about the api
+   #### Click the link to see details about the api
    - https://documenter.getpostman.com/view/31175801/2s9YkuXxko
 
 5. Contribute:
