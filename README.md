@@ -50,7 +50,7 @@ This TypeScript-based Course Management System utilizes Express.js and MongoDB w
 1. Installation:
 
    - Clone the repository
-   - Run npm install to install dependencies
+   - Run **npm install** to install dependencies
 
 2. Configuration:
 
@@ -58,7 +58,7 @@ This TypeScript-based Course Management System utilizes Express.js and MongoDB w
 
 3. Run:
 
-   - Execute npm run start:dev to run the application
+   - Execute **npm run start:dev** to run the application
 
 4. API Documentation:
    #### Click the link to see details about the api

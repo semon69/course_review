@@ -23,6 +23,7 @@ const userSchema = new Schema<TUser, UserModel>(
       type: String,
       enum: ['user', 'admin'],
       required: true,
+      default: 'user'
     },
     passwordHistory: {
       type: [
